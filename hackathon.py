@@ -2,6 +2,16 @@
 win_dict = {}
 ordered_seeding_array = []
 
+
+def wins_to_winpercentage(wins, games_played):
+	win_percentage = wins/games_played
+	return win_percentage
+
+def winpercentage_to_wins(win_percentage, games_played):
+	wins = win_percentage * games_played
+	return wins
+	
+
 # Take in a list of win percentages, a list of team names, and an empty global dictionary.
 # Return a global dictionary of team name keys and win percentage values.
 def write_team_to_dict(win_percentage, team_name, dictionary):
@@ -16,7 +26,7 @@ def write_team_to_dict(win_percentage, team_name, dictionary):
 def order_dict(win_dict, ordered_seeding_array):
 	for key, value in sorted(win_dict.iteritems(), key=lambda (k,v): (v,k), reverse=True):
     	result.append(key)
-    	
+
 
 # Take in all team arrays with information about wins and perfect win expectancy, and the ordered tuple of team names returned by order_dict()
 # Return nothing. write the eliminated team name with the date to csv via the function write_to_csv().

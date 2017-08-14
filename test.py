@@ -31,14 +31,6 @@ def determine_index_order(team_result, team_name, index_order):
 	print(index_order)
 	return index_order
 
-def wins_to_winpercentage(wins, games_played):
-	win_percentage = wins/games_played
-	return win_percentage
-
-def winpercentage_to_wins(win_percentage, games_played):
-	wins = win_percentage * games_played
-	return wins
-
 i=0
 while i < len(team_name):
 	win_dict[team_name[i]] = win_percentage[i]
