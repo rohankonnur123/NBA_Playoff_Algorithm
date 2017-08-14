@@ -1,17 +1,17 @@
 
-win_percent = {}
+win_dict = {}
 ordered_seeding_array = []
 
 # Take in a list of win percentages, a list of team names, and an empty global dictionary.
 # Return a global dictionary of team name keys and win percentage values.
 def write_team_to_dict(win_percentage, team_name, dictionary):
-	for i in team_name:
-		win_percent[team_name] = win_percentage
-	return win_percent
+	while i < len(team_name):
+		win_dict[team_name[i]] = win_percentage[i]
+		i += 1
 
 # Take in the dictionary outputted by write_team_to_dict()
 # Return an ordered tuple of team names by win percentage from greatest to least.
-def order_dict(win_percent_dict, ordered_seeding_array):
+def order_dict(win_dict, ordered_seeding_array):
 	for key, value in sorted(ordered_seeding_array.iteritems(), key=lambda (k,v): (v,k), reverse=True):
     	result.append(key)
     return result
@@ -21,7 +21,7 @@ def order_dict(win_percent_dict, ordered_seeding_array):
 def elim_determine(team_arrays, ordered_list):
 	standard = ordered_list[8].wins
 	i = 9
-	while i < team_name.length:
+	while i < len(team_name):
 		comp_val = ordered_list[i].expected_wins
 		if comp_val < standard:
 			write_to_csv(team_name[i])
