@@ -79,7 +79,7 @@ def elim_determine(alphabetical_team_name_list, seeded_team_name_list, index_ord
 	while i < len(seeded_team_name_list):
 		comp_val = alphabetical_expected_wins_list[index_order[i]]
 		if comp_val < standard:
-			print(seeded_team_name_list[i] + " is eliminate!")
+			print(seeded_team_name_list[i] + " is eliminated!")
 		else:
 			print(seeded_team_name_list[i] + " is still in the running!")
 		i+=1

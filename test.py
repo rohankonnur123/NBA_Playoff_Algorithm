@@ -102,7 +102,7 @@ i = 4
 while i < len(team_result):
 	comp_val = perfect_expected_wins[index_order[i]]
 	if comp_val < standard:
-		print(team_result[i] + " is eliminate!")
+		print(team_result[i] + " is eliminated!")
 	else:
 		print(team_result[i] + " is still in the running!")
 	i+=1
