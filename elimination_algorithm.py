@@ -120,7 +120,7 @@ def date_to_number(date):
 	day = int(date.split('/')[1])
 	year = int(date.split('/')[2])
 
-	if month = 10 and day = 25 and year = 2016:
+	if month == 10 and day == 25 and year == 2016:
 		return 0
 
 	return [month, day, year]
