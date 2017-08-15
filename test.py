@@ -13,9 +13,10 @@ import csv
 import math
 
 game_data = []
+team_data = []
 
 
-def csv_to_array(csv_file_name):
+def csv_to_array(csv_file_name, array_to_copy):
 	'''
 	:param csv_file_name Name of the csv file being used
 
@@ -24,14 +25,16 @@ def csv_to_array(csv_file_name):
 	with open(csv_file_name) as csvfile:
 		reader = csv.reader(csvfile) # change contents to floats
 		for row in reader: # each row is a list
-			game_data.append(row)
+			array_to_copy.append(row)
 	return
 
 # Set the global array of game_data so that we can access and manipulate
-csv_to_array('Analytics_Attachment/2016_17_NBA_Scores-Table 1.csv')
-print(game_data)
+csv_to_array('Analytics_Attachment/2016_17_NBA_Scores-Table 1.csv', game_data)
+# print(game_data)
 game_data = game_data[1:]
 
+
+csv_to_array('Analytics_Attachment/Division_Info-Table 1.csv', team_data)
 
 
 
