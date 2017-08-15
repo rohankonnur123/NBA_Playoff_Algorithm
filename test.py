@@ -8,6 +8,34 @@
 # a["GSW"] = .823
 
 
+
+import csv
+import math
+
+game_data = []
+
+
+def csv_to_array(csv_file_name):
+	'''
+	:param csv_file_name Name of the csv file being used
+
+	Returns {Array} 2D array of tabular data from the csv file
+	'''
+	with open(csv_file_name) as csvfile:
+		reader = csv.reader(csvfile) # change contents to floats
+		for row in reader: # each row is a list
+			game_data.append(row)
+	return
+
+# Set the global array of game_data so that we can access and manipulate
+csv_to_array('Analytics_Attachment/2016_17_NBA_Scores-Table 1.csv')
+print(game_data)
+game_data = game_data[1:]
+
+
+
+
+
 win_dict = {}
 team_result = []
 win_percentage_result = []
