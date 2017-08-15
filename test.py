@@ -14,7 +14,8 @@ import math
 
 game_data = []
 team_data = []
-
+east_team_names = []
+west_team_names = []
 
 def csv_to_array(csv_file_name, array_to_copy):
 	'''
@@ -35,7 +36,17 @@ game_data = game_data[1:]
 
 
 csv_to_array('Analytics_Attachment/Division_Info-Table 1.csv', team_data)
+team_data = team_data[1:]
+# print(team_data)
 
+# Reading team names into arrays by conference
+for array in team_data:
+	if array[2] == 'East':
+		east_team_names.append(array[0])
+	else:
+		west_team_names.append(array[0])
+print(east_team_names)
+print(west_team_names)
 
 
 
