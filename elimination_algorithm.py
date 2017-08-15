@@ -105,15 +105,35 @@ def date_to_number(date):
 	Returns {Integer} that represents the day of the season, assuming the first game was played on day 0
 	'''
 	day_of_season = 0
+	number_to_month = {'11': 'november', '12': 'december', '1': 'january', '2': 'february', '3': 'march', '4': 'april'}
+	nba_days_in_month = {'november': 30, 'december': 31, 'january': 31, 'february': 27, 'march': 31, 'april': 12}
 
 	month = int(date.split('/')[0])
 	day = int(date.split('/')[1])
 	year = int(date.split('/')[2])
 
-	if month == 10 and day == 25 and year == 2016:
-		return 0
+	if year == 16:
+		if month == 10:
+			return day - 25
+		else:
+			if month == 11:
+				return day + 6
+			else:
+				return day + nba_days_in_month['november'] + 6
+	else:
+		i = 1
+		full_month_days = 6 + nba_days_in_month['november'] + nba_days_in_month['december']
+		additional_days = 0
+		while i <= month:
+			if i == month:
+				additional_days += day
+			else:
+				i_name = number_to_month[str(i)]
+				i_days = nba_days_in_month[i_name]
+				full_month_days += i_days
+			i += 1
+		return full_month_days + additional_days
 
-	return [month, day, year]
 
 # Set the global array with all the game data
 # Abstract away the csv file and just reference the array now
@@ -121,9 +141,3 @@ csv_to_array('Analytics_Attachment/2016_17_NBA_Scores-Table 1.csv', game_data)
 
 # remove labels
 game_data = game_data[1:]
-
-print(game_data[0][0])
-
-
-
-
