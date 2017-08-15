@@ -7,7 +7,7 @@ game_data = []
 win_dict = {}
 ordered_seeding_array = []
 
-def csv_to_array(csv_file_name, array_to_copy):
+def csv_to_array(csv_file_name, write_array):
 	'''
 	:param csv_file_name Name of the csv file being used
 
@@ -16,12 +16,14 @@ def csv_to_array(csv_file_name, array_to_copy):
 	with open(csv_file_name) as csvfile:
 		reader = csv.reader(csvfile) # change contents to floats
 		for row in reader: # each row is a list
-			array_to_copy.append(row)
+			write_array.append(row)
 	return
 
-# Set the global array of game_data so that we can access and manipulate
-csv_to_array('Analytics_Attachment/2016_17_NBA_Scores-Table 1.csv')
-game_data = game_data[1:]
+def format_array_with_data(csv_file_name, write_array):
+	csv_to_array(csv_file_name, write_array)
+	write_array = write_array[1:]
+	return write_array
+
 
 def wins_to_winpercentage(wins, games_played):
 	'''
@@ -44,55 +46,53 @@ def winpercentage_to_wins(win_percentage, games_played):
 	return wins
 
 
-index_order = []
-def determine_index_order(team_result, team_name, index_order):
-	for correct_index_team in team_result:
-		counter = 0
-		for wrong_index_team in team_name:
-			if correct_index_team == wrong_index_team:
-				index_order.append(counter)
-			else:
-				counter += 1
-	print(index_order)
-	return index_order
-	
-
 # Take in a list of win percentages, a list of team names, and an empty global dictionary.
 # Return a global dictionary of team name keys and win percentage values.
-def write_team_to_dict(win_percentage, team_name, dictionary):
+def write_team_to_dict(alphabetical_win_percentage_list, alphabetical_team_name_list, name_to_win_percentage_dict):
 	i=0
-	while i < len(team_name):
-		win_dict[team_name[i]] = win_percentage[i]
+	while i < len(alphabetical_team_name_list):
+		name_to_win_percentage_dict[alphabetical_team_name_list[i]] = alphabetical_win_percentage_list[i]
 		i += 1
+	return name_to_win_percentage_dict
+
+# Take in the dictionary outputted by write_team_to_dict(), an array to write the ordered seeds to, and an array to write corresponding win % to
+# Return the two arrays of team names and win % in order from most wins to least
+def order_dict(name_to_win_percentage_dict, seeded_team_name_list, seeded_win_percentage_array):
+	for key, value in sorted(name_to_win_percentage_dict.iteritems(), key=lambda (k,v): (v,k), reverse=True):
+	    seeded_team_name_list.append(key)
+	    seeded_win_percentage_array.append(value)
 
 
-# Take in the dictionary outputted by write_team_to_dict()
-# Return an ordered tuple of team names by win percentage from greatest to least.
-def order_dict(win_dict, ordered_seeding_array):
-	for key, value in sorted(win_dict.iteritems(), key=lambda (k,v): (v,k), reverse=True):
-	    team_result.append(key)
-	    win_percentage_result.append(value)
-	print(team_result)
-	print(team_name)
-
+index_order = []
+def determine_index_order(seeded_team_name_list, alphabetical_team_name_list, index_conversion_array):
+	for correct_index_team in seeded_team_name_list:
+		counter = 0
+		for wrong_index_team in alphabetical_team_name_list:
+			if correct_index_team == wrong_index_team:
+				index_conversion_array.append(counter)
+			else:
+				counter += 1
+	print(index_conversion_array)
+	return index_conversion_array
+	
 
 # Take in all team arrays with information about wins and perfect win expectancy, and the ordered tuple of team names returned by order_dict()
 # Return nothing. write the eliminated team name with the date to csv via the function write_to_csv().
-def elim_determine(team_arrays, ordered_list):
-	determine_index_order(team_result, team_name, index_order)
-	last_seed_team = team_result[7]
-	standard = wins[index_order[7]] 
+def elim_determine(alphabetical_team_name_list, seeded_team_name_list, index_order, alphabetical_win_list, alphabetical_expected_wins_list):
+	determine_index_order(seeded_team_name_list, alphabetical_team_name_list, index_order)
+	last_seed_team = seeded_team_name_list[7]
+	standard = alphabetical_win_list[index_order[7]] 
 	i = 8
-	while i < len(team_result):
-		comp_val = perfect_expected_wins[index_order[i]]
+	while i < len(seeded_team_name_list):
+		comp_val = alphabetical_expected_wins_list[index_order[i]]
 		if comp_val < standard:
-			print(team_result[i] + " is eliminate!")
+			print(seeded_team_name_list[i] + " is eliminate!")
 		else:
-			print(team_result[i] + " is still in the running!")
+			print(seeded_team_name_list[i] + " is still in the running!")
 		i+=1
 
 
-def write_to_csv(team_name, current_iterative_date):
+def write_to_csv(alphabetical_team_name_list, current_iterative_date):
 	return
 
 def determine_winner(game):
