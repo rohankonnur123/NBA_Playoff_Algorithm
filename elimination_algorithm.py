@@ -92,4 +92,5 @@ def date_to_number(date):
 
 	Returns {Integer} that represents the day of the season, assuming the first game was played on day 0
 	'''
+	return
 
