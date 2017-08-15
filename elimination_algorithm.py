@@ -10,6 +10,7 @@ ordered_seeding_array = []
 def csv_to_array(csv_file_name, write_array):
 	'''
 	:param csv_file_name Name of the csv file being used
+	
 	Returns {Array} 2D array of tabular data from the csv file
 	'''
 	with open(csv_file_name) as csvfile:
@@ -27,6 +28,7 @@ def wins_to_winpercentage(wins, games_played):
 	'''
 	:param wins Number of wins the team currently has
 	:param games_played Number of games the team has played
+	
 	Returns {Float} the team's win percentage
 	'''
 	win_percentage = wins/games_played
@@ -36,6 +38,7 @@ def winpercentage_to_wins(win_percentage, games_played):
 	'''
 	:param win_percentage Team's current win percentage
 	:param games_played Number of games the team has played
+	
 	Returns {Integer} the number of wins the team currently has
 	'''
 	wins = win_percentage * games_played
@@ -90,6 +93,7 @@ def write_to_csv(alphabetical_team_name_list, current_iterative_date):
 def determine_winner(game):
 	'''
 	:param game: List containing specs about the game (teams, winner, loser, scores, etc.)
+	
 	Returns a dictionary of the winning team and losing team {'winner': winning_team, 'loser': losing_team}
 	'''
 	home_team = game[1]
@@ -102,6 +106,7 @@ def determine_winner(game):
 def date_to_number(date):
 	'''
 	:param date: String formatted MM/DD/YYYY (could be only one digit for month or day)
+	
 	Returns {Integer} that represents the day of the season, assuming the first game was played on day 0
 	'''
 	day_of_season = 0
@@ -134,6 +139,58 @@ def date_to_number(date):
 			i += 1
 		return full_month_days + additional_days
 
+def number_to_date(number):
+	'''
+	:param number: Integer representing the day of the season a game is being played on, assuming first day is day 0
+
+	Returns {String} date in format MM/DD/YYYY (month or day can be 1 digit)
+	'''
+	nba_days_in_month = {'october': 6, 'november': 30, 'december': 31, 'january': 31, 'february': 27, 'march': 31, 'april': 12}
+	index_to_month = {'0': 'october', '1': 'november', '2': 'december', '3': 'january', '4': 'february', '5': 'march', '6': 'april'}
+	month_name_to_number = {'october': 10, 'november': 11, 'december': 12, 'january': 1, 'february': 2, 'march': 3, 'april': 4}
+	
+	# Create a list of upper bound numbers for each month
+	maxes = []
+	i = 0
+	while i < len(nba_days_in_month):
+		if i == 0:
+			maxes.append(nba_days_in_month[index_to_month[str(0)]])
+		else:
+			track = 0
+			for num in range(i+1):
+				track += nba_days_in_month[index_to_month[str(num)]]
+			maxes.append(track)
+		i += 1
+	
+	# Use the maxes bounds to find month and day for the number
+	m = 0
+	day = None
+	year = None
+
+	if number < 7:
+		day = 25 + number
+		month = 'october'
+		year = 2016
+	else:
+		elem = 0
+		while elem < len(maxes):
+			if number > maxes[elem]:
+				m += 1
+			else:
+				day = number - maxes[elem - 1]
+				break
+			elem += 1
+		month = index_to_month[str(m)]
+
+	# Convert all types to build the date string
+	month_number = month_name_to_number[month]
+	if month_number <= 10:
+		year = 2016
+	else:
+		year = 2017
+
+	return str(month_number) + '/' + str(day) + '/' + str(year)
+
 
 # Set the global array with all the game data
 # Abstract away the csv file and just reference the array now
@@ -141,3 +198,4 @@ csv_to_array('Analytics_Attachment/2016_17_NBA_Scores-Table 1.csv', game_data)
 
 # remove labels
 game_data = game_data[1:]
+
