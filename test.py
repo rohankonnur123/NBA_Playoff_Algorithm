@@ -8,6 +8,48 @@
 # a["GSW"] = .823
 
 
+
+import csv
+import math
+
+game_data = []
+team_data = []
+east_team_names = []
+west_team_names = []
+
+def csv_to_array(csv_file_name, array_to_copy):
+	'''
+	:param csv_file_name Name of the csv file being used
+
+	Returns {Array} 2D array of tabular data from the csv file
+	'''
+	with open(csv_file_name) as csvfile:
+		reader = csv.reader(csvfile) # change contents to floats
+		for row in reader: # each row is a list
+			array_to_copy.append(row)
+	return
+
+# Set the global array of game_data so that we can access and manipulate
+csv_to_array('Analytics_Attachment/2016_17_NBA_Scores-Table 1.csv', game_data)
+# print(game_data)
+game_data = game_data[1:]
+
+
+csv_to_array('Analytics_Attachment/Division_Info-Table 1.csv', team_data)
+team_data = team_data[1:]
+# print(team_data)
+
+# Reading team names into arrays by conference
+for array in team_data:
+	if array[2] == 'East':
+		east_team_names.append(array[0])
+	else:
+		west_team_names.append(array[0])
+print(east_team_names)
+print(west_team_names)
+
+
+
 win_dict = {}
 team_result = []
 win_percentage_result = []
