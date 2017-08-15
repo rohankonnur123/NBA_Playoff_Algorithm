@@ -12,6 +12,9 @@ def csv_to_array(csv_file_name):
 			game_data.append(row)
 	return
 
+# Set the global array of game_data so that we can access and manipulate
+csv_to_array('Analytics_Attachment/2016_17_NBA_Scores-Table 1.csv')
+
 def wins_to_winpercentage(wins, games_played):
 	win_percentage = wins/games_played
 	return win_percentage
@@ -51,6 +54,4 @@ def elim_determine(team_arrays, ordered_list):
 def write_to_csv(team_name, current_iterative_date):
 	return
 
-csv_to_array('Analytics_Attachment/2016_17_NBA_Scores-Table 1.csv')
-print(game_data[1][3])
 
