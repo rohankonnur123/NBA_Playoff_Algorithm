@@ -1,4 +1,5 @@
 import csv
+import math
 
 game_data = []
 
@@ -6,6 +7,11 @@ win_dict = {}
 ordered_seeding_array = []
 
 def csv_to_array(csv_file_name):
+	'''
+	:param csv_file_name Name of the csv file being used
+
+	Returns {Array} 2D array of tabular data from the csv file
+	'''
 	with open(csv_file_name) as csvfile:
 		reader = csv.reader(csvfile) # change contents to floats
 		for row in reader: # each row is a list
@@ -17,10 +23,22 @@ csv_to_array('Analytics_Attachment/2016_17_NBA_Scores-Table 1.csv')
 game_data = game_data[1:]
 
 def wins_to_winpercentage(wins, games_played):
+	'''
+	:param wins Number of wins the team currently has
+	:param games_played Number of games the team has played
+
+	Returns {Float} the team's win percentage
+	'''
 	win_percentage = wins/games_played
 	return win_percentage
 
 def winpercentage_to_wins(win_percentage, games_played):
+	'''
+	:param win_percentage Team's current win percentage
+	:param games_played Number of games the team has played
+
+	Returns {Integer} the number of wins the team currently has
+	'''
 	wins = win_percentage * games_played
 	return wins
 	
@@ -74,4 +92,4 @@ def date_to_number(date):
 
 	Returns {Integer} that represents the day of the season, assuming the first game was played on day 0
 	'''
-	
+
