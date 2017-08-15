@@ -1,3 +1,4 @@
+import csv
 
 win_dict = {}
 ordered_seeding_array = []
@@ -25,7 +26,7 @@ def write_team_to_dict(win_percentage, team_name, dictionary):
 # Return an ordered tuple of team names by win percentage from greatest to least.
 def order_dict(win_dict, ordered_seeding_array):
 	for key, value in sorted(win_dict.iteritems(), key=lambda (k,v): (v,k), reverse=True):
-    	result.append(key)
+		result.append(key)
 
 
 # Take in all team arrays with information about wins and perfect win expectancy, and the ordered tuple of team names returned by order_dict()
@@ -42,4 +43,14 @@ def elim_determine(team_arrays, ordered_list):
 def write_to_csv(team_name, current_iterative_date):
 	return
 
+
+def csv_to_array(csv_file_name):
+	results = []
+	with open(csv_file_name) as csvfile:
+		reader = csv.reader(csvfile) # change contents to floats
+		for row in reader: # each row is a list
+			results.append(row)
+	return results
+
+print(csv_to_array('Analytics_Attachment/2016_17_NBA_Scores-Table 1.csv')[1][0])
 
