@@ -161,15 +161,25 @@ def number_to_date(number):
 		i += 1
 	
 	m = 0
-	for elem in maxes:
-		if number >= elem:
-			m += 1
-		else:
-			break
-	month = index_to_month[str(m)]
+	elem = 0
+	day = 0
+	if number < 7:
+		day = 25 + number
+		month = 'october'
+		year = 2016
+	else:
+		while elem < len(maxes):
+			if number > maxes[elem]:
+				print(maxes[elem])
+				m += 1
+			else:
+				day = number - maxes[elem - 1]
+				break
+			elem += 1
+		month = index_to_month[str(m)]
 	print(month)
 
-number_to_date(30)
+number_to_date(9)
 
 
 # Set the global array with all the game data
