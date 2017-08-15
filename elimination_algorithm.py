@@ -41,6 +41,19 @@ def winpercentage_to_wins(win_percentage, games_played):
 	'''
 	wins = win_percentage * games_played
 	return wins
+
+
+index_order = []
+def determine_index_order(team_result, team_name, index_order):
+	for correct_index_team in team_result:
+		counter = 0
+		for wrong_index_team in team_name:
+			if correct_index_team == wrong_index_team:
+				index_order.append(counter)
+			else:
+				counter += 1
+	print(index_order)
+	return index_order
 	
 
 # Take in a list of win percentages, a list of team names, and an empty global dictionary.
@@ -56,18 +69,26 @@ def write_team_to_dict(win_percentage, team_name, dictionary):
 # Return an ordered tuple of team names by win percentage from greatest to least.
 def order_dict(win_dict, ordered_seeding_array):
 	for key, value in sorted(win_dict.iteritems(), key=lambda (k,v): (v,k), reverse=True):
-		result.append(key)
+	    team_result.append(key)
+	    win_percentage_result.append(value)
+	print(team_result)
+	print(team_name)
 
 
 # Take in all team arrays with information about wins and perfect win expectancy, and the ordered tuple of team names returned by order_dict()
 # Return nothing. write the eliminated team name with the date to csv via the function write_to_csv().
 def elim_determine(team_arrays, ordered_list):
-	standard = ordered_list[8].wins
-	i = 9
-	while i < len(team_name):
-		comp_val = ordered_list[i].expected_wins
+	determine_index_order(team_result, team_name, index_order)
+	last_seed_team = team_result[7]
+	standard = wins[index_order[7]] 
+	i = 8
+	while i < len(team_result):
+		comp_val = perfect_expected_wins[index_order[i]]
 		if comp_val < standard:
-			write_to_csv(team_name[i])
+			print(team_result[i] + " is eliminate!")
+		else:
+			print(team_result[i] + " is still in the running!")
+		i+=1
 
 
 def write_to_csv(team_name, current_iterative_date):
