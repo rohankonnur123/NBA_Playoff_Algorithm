@@ -1,8 +1,16 @@
 import csv
 
+game_data = []
+
 win_dict = {}
 ordered_seeding_array = []
 
+def csv_to_array(csv_file_name):
+	with open(csv_file_name) as csvfile:
+		reader = csv.reader(csvfile) # change contents to floats
+		for row in reader: # each row is a list
+			game_data.append(row)
+	return
 
 def wins_to_winpercentage(wins, games_played):
 	win_percentage = wins/games_played
@@ -43,14 +51,6 @@ def elim_determine(team_arrays, ordered_list):
 def write_to_csv(team_name, current_iterative_date):
 	return
 
-
-def csv_to_array(csv_file_name):
-	results = []
-	with open(csv_file_name) as csvfile:
-		reader = csv.reader(csvfile) # change contents to floats
-		for row in reader: # each row is a list
-			results.append(row)
-	return results
-
-print(csv_to_array('Analytics_Attachment/2016_17_NBA_Scores-Table 1.csv')[1][0])
+csv_to_array('Analytics_Attachment/2016_17_NBA_Scores-Table 1.csv')
+print(game_data[1][3])
 
