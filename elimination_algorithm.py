@@ -57,7 +57,7 @@ def write_to_csv(team_name, current_iterative_date):
 
 def determine_winner(game):
 	'''
-	:param game: List containing data about the game (teams, winner, loser, scores, etc.)
+	:param game: List containing specs about the game (teams, winner, loser, scores, etc.)
 
 	Returns a dictionary of the winning team and losing team {'winner': winning_team, 'loser': losing_team}
 	'''
@@ -67,3 +67,11 @@ def determine_winner(game):
 	if game[-1] == 'Away':
 		return {'winner': away_team, 'loser': home_team}
 	return {'winner': home_team, 'loser': away_team}
+
+def date_to_number(date):
+	'''
+	:param date: String formatted MM/DD/YYYY (could be only one digit for month or day)
+
+	Returns {Integer} that represents the day of the season, assuming the first game was played on day 0
+	'''
+	
