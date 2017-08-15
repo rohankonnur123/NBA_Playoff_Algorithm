@@ -101,6 +101,8 @@ def date_to_number(date):
 	if month = 10 and day = 25 and year = 2016:
 		return 0
 
+	
+
 	return [month, day, year]
 
 #print(date_to_number(game_data[0][0]))
