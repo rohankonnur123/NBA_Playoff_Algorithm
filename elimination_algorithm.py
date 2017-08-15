@@ -56,10 +56,14 @@ def write_to_csv(team_name, current_iterative_date):
 	return
 
 def determine_winner(game):
+	'''
+	:param game: List containing data about the game (teams, winner, loser, scores, etc.)
+
+	Returns a dictionary of the winning team and losing team {'winner': winning_team, 'loser': losing_team}
+	'''
 	home_team = game[1]
 	away_team = game[2]
 
 	if game[-1] == 'Away':
-		return away_team
-	return home_team
-
+		return {'winner': away_team, 'loser': home_team}
+	return {'winner': home_team, 'loser': away_team}
