@@ -147,7 +147,9 @@ def number_to_date(number):
 	'''
 	nba_days_in_month = {'october': 6, 'november': 30, 'december': 31, 'january': 31, 'february': 27, 'march': 31, 'april': 12}
 	index_to_month = {'0': 'october', '1': 'november', '2': 'december', '3': 'january', '4': 'february', '5': 'march', '6': 'april'}
+	month_name_to_number = {'october': 10, 'november': 11, 'december': 12, 'january': 1, 'february': 2, 'march': 3, 'april': 4}
 	
+	# Create a list of upper bound numbers for each month
 	maxes = []
 	i = 0
 	while i < len(nba_days_in_month):
@@ -160,26 +162,34 @@ def number_to_date(number):
 			maxes.append(track)
 		i += 1
 	
+	# Use the maxes bounds to find month and day for the number
 	m = 0
-	elem = 0
-	day = 0
+	day = None
+	year = None
+
 	if number < 7:
 		day = 25 + number
 		month = 'october'
 		year = 2016
 	else:
+		elem = 0
 		while elem < len(maxes):
 			if number > maxes[elem]:
-				print(maxes[elem])
 				m += 1
 			else:
 				day = number - maxes[elem - 1]
 				break
 			elem += 1
 		month = index_to_month[str(m)]
-	print(month)
 
-number_to_date(9)
+	# Convert all types to build the date string
+	month_number = month_name_to_number[month]
+	if month_number <= 10:
+		year = 2016
+	else:
+		year = 2017
+
+	return str(month_number) + '/' + str(day) + '/' + str(year)
 
 
 # Set the global array with all the game data
@@ -188,3 +198,4 @@ csv_to_array('Analytics_Attachment/2016_17_NBA_Scores-Table 1.csv', game_data)
 
 # remove labels
 game_data = game_data[1:]
+
