@@ -92,5 +92,14 @@ def date_to_number(date):
 
 	Returns {Integer} that represents the day of the season, assuming the first game was played on day 0
 	'''
-	return
+	month = int(date.split('/')[0])
+	day = int(date.split('/')[1])
+	year = int(date.split('/')[2])
+
+	return [month, day, year]
+
+print(date_to_number(game_data[0][0]))
+
+
+
 
