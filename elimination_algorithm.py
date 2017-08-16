@@ -2,11 +2,6 @@
 import csv
 import math
 
-game_data = []
-
-win_dict = {}
-ordered_seeding_array = []
-
 def csv_to_array(csv_file_name, write_array):
 	'''
 	:param csv_file_name Name of the csv file being used
@@ -31,8 +26,11 @@ def wins_to_winpercentage(wins, games_played):
 	
 	Returns {Float} the team's win percentage
 	'''
-	win_percentage = wins/games_played
-	return win_percentage
+	if games_played == 0:
+		return 1.000
+	else:
+		win_percentage = wins/games_played
+		return win_percentage
 
 def winpercentage_to_wins(win_percentage, games_played):
 	'''
@@ -60,7 +58,6 @@ def order_dict(name_to_win_percentage_dict, seeded_team_name_list, seeded_win_pe
 	    seeded_team_name_list.append(key)
 	    seeded_win_percentage_array.append(value)
 
-index_order = []
 def determine_index_order(seeded_team_name_list, alphabetical_team_name_list, index_conversion_array):
 	for correct_index_team in seeded_team_name_list:
 		counter = 0
@@ -69,7 +66,7 @@ def determine_index_order(seeded_team_name_list, alphabetical_team_name_list, in
 				index_conversion_array.append(counter)
 			else:
 				counter += 1
-	print(index_conversion_array)
+	# print(index_conversion_array)
 	return index_conversion_array
 	
 # Take in all team arrays with information about wins and perfect win expectancy, and the ordered tuple of team names returned by order_dict()
@@ -191,11 +188,91 @@ def number_to_date(number):
 
 	return str(month_number) + '/' + str(day) + '/' + str(year)
 
+#execute
 
-# Set the global array with all the game data
-# Abstract away the csv file and just reference the array now
-csv_to_array('Analytics_Attachment/2016_17_NBA_Scores-Table 1.csv', game_data)
+game_data = []
+team_data = []
 
-# remove labels
-game_data = game_data[1:]
+east_team_names = []
+west_team_names = []
+
+format_array_with_data('Analytics_Attachment/2016_17_NBA_Scores-Table 1.csv', game_data)
+
+format_array_with_data('Analytics_Attachment/Division_Info-Table 1.csv', team_data)
+
+# Reading team names into arrays by conference
+for array in team_data:
+    if array[2] == 'East':
+        east_team_names.append(array[0])
+    elif array[2] == "West":
+        west_team_names.append(array[0])
+
+east_wins = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+east_perfect_wins = [82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82]
+east_games_played = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+east_win_percentage = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+west_wins = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+west_perfect_wins = [82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82]
+west_games_played = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+west_win_percentage = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+
+def find_index(given_item_to_find, team_name_list):
+    counter = 0
+    for i in team_name_list:
+        if given_item_to_find == i:
+            return counter
+        else:
+            counter+=1
+
+for game in game_data:
+    winner = determine_winner(game)['winner']
+    loser = determine_winner(game)['loser']
+    
+    if winner in west_team_names:
+        index = find_index(winner, west_team_names)
+        west_wins[index] += 1
+        west_games_played[index] += 1
+        west_win_percentage[index] = wins_to_winpercentage(west_wins[index], west_games_played[index])
+    elif winner in east_team_names:
+        index = find_index(winner, east_team_names)
+        east_wins[index] += 1
+        east_games_played[index] += 1
+        east_win_percentage[index] = wins_to_winpercentage(east_wins[index], east_games_played[index])
+        
+    if loser in west_team_names:
+        index = find_index(loser, west_team_names)
+        west_games_played[index] += 1
+        west_win_percentage[index] = wins_to_winpercentage(west_wins[index], west_games_played[index])
+        west_perfect_wins[index] -= 1
+    elif loser in east_team_names:
+        index = find_index(loser, east_team_names)
+        east_games_played[index] += 1
+        east_win_percentage[index] = wins_to_winpercentage(west_wins[index], west_games_played[index])
+        east_perfect_wins[index] -= 1
+    
+    west_name_to_win_percentage_dict = {}
+    print(len(west_win_percentage))
+    print(len(west_team_names))
+    west_name_to_win_percentage_dict = write_team_to_dict(west_win_percentage, west_team_names, west_name_to_win_percentage_dict)
+    
+    east_name_to_win_percentage_dict = {}
+    east_name_to_win_percentage_dict = write_team_to_dict(east_win_percentage, east_team_names, east_name_to_win_percentage_dict)
+    
+    west_seeded_team_name_list = []
+    east_seeded_team_name_list = []
+    
+    west_seeded_win_percentage_array = []
+    east_seeded_win_percentage_array = []
+    
+    order_dict(west_name_to_win_percentage_dict, west_seeded_team_name_list, west_seeded_win_percentage_array)
+    order_dict(east_name_to_win_percentage_dict, east_seeded_team_name_list, east_seeded_win_percentage_array)
+    
+    west_index_order = []
+    east_index_order = []
+    
+    elim_determine(west_team_names, west_seeded_team_name_list, west_index_order, west_wins, west_perfect_wins, game)
+    elim_determine(east_team_names, east_seeded_team_name_list, east_index_order, east_wins, east_perfect_wins, game)
+
 
