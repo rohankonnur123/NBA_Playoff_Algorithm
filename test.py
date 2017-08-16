@@ -1,11 +1,23 @@
 
-# a["BOS"] = .467
-# a["CHI"] = .345
-# a["ATL"] = .347
-# a["MIA"] = .190
-# a["PHX"] = .190
-# a["SAS"] = .837
-# a["GSW"] = .823
+a = {}
+seeded_win_percentage_array = []
+seeded_team_name_list = []
+a["BOS"] = .467
+a["CHI"] = .345
+a["ATL"] = .347
+a["MIA"] = .190
+a["PHX"] = .190
+a["SAS"] = .837
+a["GSW"] = .823
+
+def order_dict(name_to_win_percentage_dict, seeded_team_name_list, seeded_win_percentage_array):
+	for key, value in sorted(name_to_win_percentage_dict.iteritems(), key=lambda (k,v): (v,k), reverse=True):
+	    seeded_team_name_list.append(key)
+	    seeded_win_percentage_array.append(value)
+
+order_dict(a, seeded_team_name_list, seeded_win_percentage_array)
+print(seeded_team_name_list)
+print(seeded_win_percentage_array)
 
 
 
@@ -32,7 +44,7 @@ def csv_to_array(csv_file_name, array_to_copy):
 # Set the global array of game_data so that we can access and manipulate
 csv_to_array('Analytics_Attachment/2016_17_NBA_Scores-Table 1.csv', game_data)
 game_data = game_data[1:]
-print(game_data)
+# print(game_data)
 
 
 csv_to_array('Analytics_Attachment/Division_Info-Table 1.csv', team_data)

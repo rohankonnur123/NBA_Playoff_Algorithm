@@ -1,4 +1,6 @@
 
+from __future__ import division 
+
 import csv
 import math
 
@@ -66,12 +68,12 @@ def determine_index_order(seeded_team_name_list, alphabetical_team_name_list, in
 				index_conversion_array.append(counter)
 			else:
 				counter += 1
-	# print(index_conversion_array)
 	return index_conversion_array
 	
 # Take in all team arrays with information about wins and perfect win expectancy, and the ordered tuple of team names returned by order_dict()
 # Return nothing. write the eliminated team name with the date to csv via the function write_to_csv().
-def elim_determine(alphabetical_team_name_list, seeded_team_name_list, index_order, alphabetical_win_list, alphabetical_expected_wins_list, game):
+def elim_determine(alphabetical_team_name_list, seeded_team_name_list, index_order, alphabetical_win_list, alphabetical_expected_wins_list, 
+					alphabetical_elimination_date_array, game):
 	determine_index_order(seeded_team_name_list, alphabetical_team_name_list, index_order)
 	last_seed_team = seeded_team_name_list[7]
 	standard = alphabetical_win_list[index_order[7]] 
@@ -79,7 +81,11 @@ def elim_determine(alphabetical_team_name_list, seeded_team_name_list, index_ord
 	while i < len(seeded_team_name_list):
 		comp_val = alphabetical_expected_wins_list[index_order[i]]
 		if comp_val < standard:
-			print(seeded_team_name_list[i] + " is eliminated on " + game[0])
+			if alphabetical_elimination_date_array[index_order[i]] != 0:
+				print(seeded_team_name_list[i] + " is eliminated on " + alphabetical_elimination_date_array[index_order[i]])
+			else:
+				alphabetical_elimination_date_array[index_order[i]] = game[0]
+				print(seeded_team_name_list[i] + " is eliminated on " + game[0])
 		else:
 			print(seeded_team_name_list[i] + " is still in the running!")
 		i+=1
@@ -235,26 +241,52 @@ for game in game_data:
         west_wins[index] += 1
         west_games_played[index] += 1
         west_win_percentage[index] = wins_to_winpercentage(west_wins[index], west_games_played[index])
+        # print(west_wins[index])
+        # print(west_games_played[index])
+        # if west_games_played[index] == 0:
+        # 	print(1)
+        # else:
+        # 	print(west_wins[index] / west_games_played[index])
+        # print(wins_to_winpercentage(west_wins[index], west_games_played[index]))
     elif winner in east_team_names:
         index = find_index(winner, east_team_names)
         east_wins[index] += 1
         east_games_played[index] += 1
         east_win_percentage[index] = wins_to_winpercentage(east_wins[index], east_games_played[index])
+        # print(east_wins[index])
+        # print(east_games_played[index])
+        # if east_games_played[index] == 0:
+        # 	print(1)
+        # else:
+        # 	print(east_wins[index] / east_games_played[index])
+        # print(wins_to_winpercentage(east_wins[index], east_games_played[index]))
         
     if loser in west_team_names:
         index = find_index(loser, west_team_names)
         west_games_played[index] += 1
         west_win_percentage[index] = wins_to_winpercentage(west_wins[index], west_games_played[index])
+        # print(west_wins[index])
+        # print(west_games_played[index])
+        # if west_games_played[index] == 0:
+        # 	print(1)
+        # else:
+        # 	print(west_wins[index] / west_games_played[index])
+        # print(wins_to_winpercentage(west_wins[index], west_games_played[index]))
         west_perfect_wins[index] -= 1
     elif loser in east_team_names:
         index = find_index(loser, east_team_names)
         east_games_played[index] += 1
-        east_win_percentage[index] = wins_to_winpercentage(west_wins[index], west_games_played[index])
+        east_win_percentage[index] = wins_to_winpercentage(east_wins[index], east_games_played[index])
+        # print(east_wins[index])
+        # print(east_games_played[index])
+        # if east_games_played[index] == 0:
+        # 	print(1)
+        # else:
+        # 	print(east_wins[index] / east_games_played[index])
+        # print(wins_to_winpercentage(east_wins[index], east_games_played[index]))
         east_perfect_wins[index] -= 1
     
     west_name_to_win_percentage_dict = {}
-    print(len(west_win_percentage))
-    print(len(west_team_names))
     west_name_to_win_percentage_dict = write_team_to_dict(west_win_percentage, west_team_names, west_name_to_win_percentage_dict)
     
     east_name_to_win_percentage_dict = {}
@@ -268,11 +300,16 @@ for game in game_data:
     
     order_dict(west_name_to_win_percentage_dict, west_seeded_team_name_list, west_seeded_win_percentage_array)
     order_dict(east_name_to_win_percentage_dict, east_seeded_team_name_list, east_seeded_win_percentage_array)
+    print(west_seeded_team_name_list)
+    print(east_seeded_team_name_list)
     
     west_index_order = []
     east_index_order = []
-    
-    elim_determine(west_team_names, west_seeded_team_name_list, west_index_order, west_wins, west_perfect_wins, game)
-    elim_determine(east_team_names, east_seeded_team_name_list, east_index_order, east_wins, east_perfect_wins, game)
+
+    west_alphabetical_elimination_date_array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    east_alphabetical_elimination_date_array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    elim_determine(west_team_names, west_seeded_team_name_list, west_index_order, west_wins, west_perfect_wins, west_alphabetical_elimination_date_array, game)
+    elim_determine(east_team_names, east_seeded_team_name_list, east_index_order, east_wins, east_perfect_wins, east_alphabetical_elimination_date_array, game)
 
 
