@@ -74,7 +74,7 @@ def determine_index_order(seeded_team_name_list, alphabetical_team_name_list, in
 	
 # Take in all team arrays with information about wins and perfect win expectancy, and the ordered tuple of team names returned by order_dict()
 # Return nothing. write the eliminated team name with the date to csv via the function write_to_csv().
-def elim_determine(alphabetical_team_name_list, seeded_team_name_list, index_order, alphabetical_win_list, alphabetical_expected_wins_list):
+def elim_determine(alphabetical_team_name_list, seeded_team_name_list, index_order, alphabetical_win_list, alphabetical_expected_wins_list, game):
 	determine_index_order(seeded_team_name_list, alphabetical_team_name_list, index_order)
 	last_seed_team = seeded_team_name_list[7]
 	standard = alphabetical_win_list[index_order[7]] 
@@ -82,7 +82,7 @@ def elim_determine(alphabetical_team_name_list, seeded_team_name_list, index_ord
 	while i < len(seeded_team_name_list):
 		comp_val = alphabetical_expected_wins_list[index_order[i]]
 		if comp_val < standard:
-			print(seeded_team_name_list[i] + " is eliminated!")
+			print(seeded_team_name_list[i] + " is eliminated on " + game[0])
 		else:
 			print(seeded_team_name_list[i] + " is still in the running!")
 		i+=1

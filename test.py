@@ -31,13 +31,13 @@ def csv_to_array(csv_file_name, array_to_copy):
 
 # Set the global array of game_data so that we can access and manipulate
 csv_to_array('Analytics_Attachment/2016_17_NBA_Scores-Table 1.csv', game_data)
-# print(game_data)
 game_data = game_data[1:]
+print(game_data)
 
 
 csv_to_array('Analytics_Attachment/Division_Info-Table 1.csv', team_data)
 team_data = team_data[1:]
-# print(team_data)
+print(team_data)
 
 # Reading team names into arrays by conference
 for array in team_data:
