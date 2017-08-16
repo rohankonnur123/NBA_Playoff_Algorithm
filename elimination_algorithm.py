@@ -75,12 +75,15 @@ def determine_index_order(seeded_team_name_list, alphabetical_team_name_list, in
 # Return nothing. write the eliminated team name with the date to csv via the function write_to_csv().
 def elim_determine(alphabetical_team_name_list, seeded_team_name_list, index_order, alphabetical_win_list, alphabetical_expected_wins_list, 
 					alphabetical_elimination_date_array, game):
+
 	determine_index_order(seeded_team_name_list, alphabetical_team_name_list, index_order)
 	last_seed_team = seeded_team_name_list[7]
 	standard = alphabetical_win_list[index_order[7]] 
 	i = 8
 	while i < len(seeded_team_name_list):
 		comp_val = alphabetical_expected_wins_list[index_order[i]]
+		print('dates')
+		print(alphabetical_elimination_date_array)
 		if comp_val < standard:
 			if alphabetical_elimination_date_array[index_order[i]] is np.string_:
 				print(seeded_team_name_list[i] + " is eliminated on " + alphabetical_elimination_date_array[index_order[i]])
@@ -106,94 +109,6 @@ def determine_winner(game):
 	if game[-1] == 'Away':
 		return {'winner': away_team, 'loser': home_team}
 	return {'winner': home_team, 'loser': away_team}
-
-def date_to_number(date):
-	'''
-	:param date: String formatted MM/DD/YYYY (could be only one digit for month or day)
-	
-	Returns {Integer} that represents the day of the season, assuming the first game was played on day 0
-	'''
-	day_of_season = 0
-	number_to_month = {'11': 'november', '12': 'december', '1': 'january', '2': 'february', '3': 'march', '4': 'april'}
-	nba_days_in_month = {'november': 30, 'december': 31, 'january': 31, 'february': 27, 'march': 31, 'april': 12}
-
-	month = int(date.split('/')[0])
-	day = int(date.split('/')[1])
-	year = int(date.split('/')[2])
-
-	if year == 16:
-		if month == 10:
-			return day - 25
-		else:
-			if month == 11:
-				return day + 6
-			else:
-				return day + nba_days_in_month['november'] + 6
-	else:
-		i = 1
-		full_month_days = 6 + nba_days_in_month['november'] + nba_days_in_month['december']
-		additional_days = 0
-		while i <= month:
-			if i == month:
-				additional_days += day
-			else:
-				i_name = number_to_month[str(i)]
-				i_days = nba_days_in_month[i_name]
-				full_month_days += i_days
-			i += 1
-		return full_month_days + additional_days
-
-def number_to_date(number):
-	'''
-	:param number: Integer representing the day of the season a game is being played on, assuming first day is day 0
-
-	Returns {String} date in format MM/DD/YYYY (month or day can be 1 digit)
-	'''
-	nba_days_in_month = {'october': 6, 'november': 30, 'december': 31, 'january': 31, 'february': 27, 'march': 31, 'april': 12}
-	index_to_month = {'0': 'october', '1': 'november', '2': 'december', '3': 'january', '4': 'february', '5': 'march', '6': 'april'}
-	month_name_to_number = {'october': 10, 'november': 11, 'december': 12, 'january': 1, 'february': 2, 'march': 3, 'april': 4}
-	
-	# Create a list of upper bound numbers for each month
-	maxes = []
-	i = 0
-	while i < len(nba_days_in_month):
-		if i == 0:
-			maxes.append(nba_days_in_month[index_to_month[str(0)]])
-		else:
-			track = 0
-			for num in range(i+1):
-				track += nba_days_in_month[index_to_month[str(num)]]
-			maxes.append(track)
-		i += 1
-	
-	# Use the maxes bounds to find month and day for the number
-	m = 0
-	day = None
-	year = None
-
-	if number < 7:
-		day = 25 + number
-		month = 'october'
-		year = 2016
-	else:
-		elem = 0
-		while elem < len(maxes):
-			if number > maxes[elem]:
-				m += 1
-			else:
-				day = number - maxes[elem - 1]
-				break
-			elem += 1
-		month = index_to_month[str(m)]
-
-	# Convert all types to build the date string
-	month_number = month_name_to_number[month]
-	if month_number <= 10:
-		year = 2016
-	else:
-		year = 2017
-
-	return str(month_number) + '/' + str(day) + '/' + str(year)
 
 #execute
 
@@ -301,7 +216,10 @@ for game in game_data:
     
     order_dict(west_name_to_win_percentage_dict, west_seeded_team_name_list, west_seeded_win_percentage_array)
     order_dict(east_name_to_win_percentage_dict, east_seeded_team_name_list, east_seeded_win_percentage_array)
+
+    print('WEST RANKINGS')
     print(west_seeded_team_name_list)
+    print('EAST RANKINGS')
     print(east_seeded_team_name_list)
     
     west_index_order = []
