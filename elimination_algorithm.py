@@ -3,6 +3,7 @@ from __future__ import division
 
 import csv
 import math
+import numpy as np
 
 def csv_to_array(csv_file_name, write_array):
 	'''
@@ -81,7 +82,7 @@ def elim_determine(alphabetical_team_name_list, seeded_team_name_list, index_ord
 	while i < len(seeded_team_name_list):
 		comp_val = alphabetical_expected_wins_list[index_order[i]]
 		if comp_val < standard:
-			if alphabetical_elimination_date_array[index_order[i]] != 0:
+			if alphabetical_elimination_date_array[index_order[i]] is np.string_:
 				print(seeded_team_name_list[i] + " is eliminated on " + alphabetical_elimination_date_array[index_order[i]])
 			else:
 				alphabetical_elimination_date_array[index_order[i]] = game[0]
@@ -311,5 +312,6 @@ for game in game_data:
 
     elim_determine(west_team_names, west_seeded_team_name_list, west_index_order, west_wins, west_perfect_wins, west_alphabetical_elimination_date_array, game)
     elim_determine(east_team_names, east_seeded_team_name_list, east_index_order, east_wins, east_perfect_wins, east_alphabetical_elimination_date_array, game)
-
+    print(west_alphabetical_elimination_date_array)
+    print(east_alphabetical_elimination_date_array)
 
