@@ -78,18 +78,19 @@ def elim_determine(alphabetical_team_name_list, seeded_team_name_list, index_ord
 
 	determine_index_order(seeded_team_name_list, alphabetical_team_name_list, index_order)
 	last_seed_team = seeded_team_name_list[7]
-	standard = alphabetical_win_list[index_order[7]] 
+	standard = alphabetical_win_list[index_order[7]]
+
 	i = 8
 	while i < len(seeded_team_name_list):
 		comp_val = alphabetical_expected_wins_list[index_order[i]]
-		print('dates')
-		print(alphabetical_elimination_date_array)
-		if comp_val < standard:
+		# print('dates')
+		# print(alphabetical_elimination_date_array)
+		if comp_val < standard: # need to change this condition so that the initial elimination date isn't overriden
 			if alphabetical_elimination_date_array[index_order[i]] is np.string_:
 				print(seeded_team_name_list[i] + " is eliminated on " + alphabetical_elimination_date_array[index_order[i]])
 			else:
 				alphabetical_elimination_date_array[index_order[i]] = game[0]
-				print(seeded_team_name_list[i] + " is eliminated on " + game[0])
+				print(seeded_team_name_list[i] + " is eliminated on " + alphabetical_elimination_date_array[index_order[i]])
 		else:
 			print(seeded_team_name_list[i] + " is still in the running!")
 		i+=1
