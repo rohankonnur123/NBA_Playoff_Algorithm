@@ -205,12 +205,19 @@ for game in game_data:
     east_index_order = []
 
     # Arrays of date each team's elimination
-    west_alphabetical_elimination_date_array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    east_alphabetical_elimination_date_array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    west_alphabetical_elimination_date_array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] # alphabetical within each division
+    east_alphabetical_elimination_date_array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] # alphabetical within each division
 
     # Check results
     elim_determine(west_team_names, west_seeded_team_name_list, west_index_order, west_wins, west_perfect_wins, west_alphabetical_elimination_date_array, game)
     elim_determine(east_team_names, east_seeded_team_name_list, east_index_order, east_wins, east_perfect_wins, east_alphabetical_elimination_date_array, game)
+
+    print('WEST TEAMS')
+    print(west_team_names)
+    print('WEST PLAYOFFS')
     print(west_alphabetical_elimination_date_array)
+    print('EAST TEAMS')
+    print(east_team_names)
+    print('EAST PLAYOFFS')
     print(east_alphabetical_elimination_date_array)
 
