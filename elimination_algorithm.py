@@ -79,9 +79,6 @@ def elim_determine(alphabetical_team_name_list, seeded_team_name_list, index_ord
 	determine_index_order(seeded_team_name_list, alphabetical_team_name_list, index_order)
 	last_seed_team = seeded_team_name_list[7]
 	standard = alphabetical_win_list[index_order[7]]
-	print('ALPH ARRAY')
-	print(alphabetical_elimination_date_array)
-
 	i = 8
 	while i < len(seeded_team_name_list):
 		comp_val = alphabetical_expected_wins_list[index_order[i]]
@@ -93,8 +90,8 @@ def elim_determine(alphabetical_team_name_list, seeded_team_name_list, index_ord
 			else:
 				alphabetical_elimination_date_array[index_order[i]] = game[0]
 				print(seeded_team_name_list[i] + " is eliminated on " + alphabetical_elimination_date_array[index_order[i]])
-		#else:
-			#print(seeded_team_name_list[i] + " is still in the running!")
+		else:
+			print(seeded_team_name_list[i] + " is still in the running!")
 		i+=1
 
 def write_to_csv(alphabetical_team_name_list, current_iterative_date):
@@ -217,12 +214,8 @@ for game in game_data:
     elim_determine(west_team_names, west_seeded_team_name_list, west_index_order, west_wins, west_perfect_wins, west_alphabetical_elimination_date_array, game)
     elim_determine(east_team_names, east_seeded_team_name_list, east_index_order, east_wins, east_perfect_wins, east_alphabetical_elimination_date_array, game)
 
-    print('WEST TEAMS')
-    print(west_team_names)
     print('WEST PLAYOFFS')
     print(west_alphabetical_elimination_date_array)
-    print('EAST TEAMS')
-    print(east_team_names)
     print('EAST PLAYOFFS')
     print(east_alphabetical_elimination_date_array)
 
