@@ -79,6 +79,8 @@ def elim_determine(alphabetical_team_name_list, seeded_team_name_list, index_ord
 	determine_index_order(seeded_team_name_list, alphabetical_team_name_list, index_order)
 	last_seed_team = seeded_team_name_list[7]
 	standard = alphabetical_win_list[index_order[7]]
+	print('ALPH ARRAY')
+	print(alphabetical_elimination_date_array)
 
 	i = 8
 	while i < len(seeded_team_name_list):
@@ -86,13 +88,13 @@ def elim_determine(alphabetical_team_name_list, seeded_team_name_list, index_ord
 		# print('dates')
 		# print(alphabetical_elimination_date_array)
 		if comp_val < standard: # need to change this condition so that the initial elimination date isn't overriden
-			if alphabetical_elimination_date_array[index_order[i]] is np.string_:
+			if alphabetical_elimination_date_array[index_order[i]] != 0:
 				print(seeded_team_name_list[i] + " is eliminated on " + alphabetical_elimination_date_array[index_order[i]])
 			else:
 				alphabetical_elimination_date_array[index_order[i]] = game[0]
 				print(seeded_team_name_list[i] + " is eliminated on " + alphabetical_elimination_date_array[index_order[i]])
-		else:
-			print(seeded_team_name_list[i] + " is still in the running!")
+		#else:
+			#print(seeded_team_name_list[i] + " is still in the running!")
 		i+=1
 
 def write_to_csv(alphabetical_team_name_list, current_iterative_date):
@@ -139,6 +141,9 @@ west_wins = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 west_perfect_wins = [82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82]
 west_games_played = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 west_win_percentage = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+west_alphabetical_elimination_date_array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] # alphabetical within each division
+east_alphabetical_elimination_date_array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] # alphabetical within each division
 
 
 def find_index(given_item_to_find, team_name_list):
@@ -206,8 +211,6 @@ for game in game_data:
     east_index_order = []
 
     # Arrays of date each team's elimination
-    west_alphabetical_elimination_date_array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] # alphabetical within each division
-    east_alphabetical_elimination_date_array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] # alphabetical within each division
 
     # Check results
     elim_determine(west_team_names, west_seeded_team_name_list, west_index_order, west_wins, west_perfect_wins, west_alphabetical_elimination_date_array, game)
