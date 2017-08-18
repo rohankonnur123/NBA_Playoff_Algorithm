@@ -154,6 +154,7 @@ def find_index(given_item_to_find, team_name_list):
         else:
             counter+=1
 
+
 for game in game_data:
 	# Results for each game
     winner = determine_winner(game)['winner']
