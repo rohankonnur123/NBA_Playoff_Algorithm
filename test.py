@@ -1,4 +1,12 @@
 
+from collections import defaultdict
+D = defaultdict(list)
+mylist = [20, 30, 25, 20]
+for i,item in enumerate(mylist):
+    D[item].append(i)
+D = {k:v for k,v in D.items() if len(v)>1}
+print(D)
+
 a = {}
 seeded_win_percentage_array = []
 seeded_team_name_list = []
@@ -16,8 +24,8 @@ def order_dict(name_to_win_percentage_dict, seeded_team_name_list, seeded_win_pe
 	    seeded_win_percentage_array.append(value)
 
 order_dict(a, seeded_team_name_list, seeded_win_percentage_array)
-print(seeded_team_name_list)
-print(seeded_win_percentage_array)
+# print(seeded_team_name_list)
+# print(seeded_win_percentage_array)
 
 
 
@@ -44,12 +52,12 @@ def csv_to_array(csv_file_name, array_to_copy):
 # Set the global array of game_data so that we can access and manipulate
 csv_to_array('Analytics_Attachment/2016_17_NBA_Scores-Table 1.csv', game_data)
 game_data = game_data[1:]
-# print(game_data)
+print(game_data)
 
 
 csv_to_array('Analytics_Attachment/Division_Info-Table 1.csv', team_data)
 team_data = team_data[1:]
-print(team_data)
+# print(team_data)
 
 # Reading team names into arrays by conference
 for array in team_data:
@@ -57,8 +65,8 @@ for array in team_data:
 		east_team_names.append(array[0])
 	else:
 		west_team_names.append(array[0])
-print(east_team_names)
-print(west_team_names)
+# print(east_team_names)
+# print(west_team_names)
 
 
 
@@ -82,7 +90,7 @@ def determine_index_order(team_result, team_name, index_order):
 				index_order.append(counter)
 			else:
 				counter += 1
-	print(index_order)
+	# print(index_order)
 	return index_order
 
 i=0
@@ -95,8 +103,8 @@ while i < len(team_name):
 for key, value in sorted(win_dict.iteritems(), key=lambda (k,v): (v,k), reverse=True):
     team_result.append(key)
     win_percentage_result.append(value)
-print(team_result)
-print(team_name)
+# print(team_result)
+# print(team_name)
 
 
 

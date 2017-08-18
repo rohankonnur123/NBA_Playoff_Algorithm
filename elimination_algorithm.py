@@ -1,5 +1,6 @@
 
 from __future__ import division 
+from collections import defaultdict
 
 import csv
 import math
@@ -93,6 +94,62 @@ def elim_determine(alphabetical_team_name_list, seeded_team_name_list, index_ord
 		else:
 			print(seeded_team_name_list[i] + " is still in the running!")
 		i+=1
+
+def find_win_ties(alphabetical_win_list):
+	D = defaultdict(list)
+	for i,item in enumerate(alphabetical_win_list):
+	    D[item].append(i)
+	D = {k:v for k,v in D.items() if len(v)>1}
+	return D
+
+def find_seeded_index(seeded_team_name_list, team_name, seeded_index_counter):
+	for names in seeded_team_name_list:
+		if team_name == names:
+			return seeded_index_counter
+		else:
+			seeded_index_counter += 1
+
+def season_series_result(game_data, team_name_1, team_name_2, seeded_team_name_list):
+	team_1_counter = 0
+	team_2_counter = 0
+	for game in game_data:
+		if game[1] == team_name_1 and game[2] == team_name_2:
+			if game[5] == 'Home':
+				team_1_counter += 1
+			elif game[5] == 'Away':
+				team_2_counter += 1
+		elif game[1] == team_name_2 and game[2] == team_name_1:
+			if game[5] == 'Home':
+				team_2_counter += 1
+			elif game[5] == 'Away':
+				team_1_counter += 1
+	one_seeded_index_counter = 0
+	two_seeded_index_counter = 0
+	one_seeded_index_counter = find_seeded_index(seeded_team_name_list, team_name_1, one_seeded_index_counter)
+	two_seeded_index_counter = find_seeded_index(seeded_team_name_list, team_name_2, two_seeded_index_counter)
+
+	if team_1_counter > team_2_counter and one_seeded_index_counter < two_seeded_index_counter:
+		return
+	elif team_1_counter > team_2_counter and one_seeded_index_counter > two_seeded_index_counter:
+		seeded_team_name_list[one_seeded_index_counter] = team_name_2
+		seeded_team_name_list[two_seeded_index_counter] = team_name_1
+	elif team_1_counter < team_2_counter and one_seeded_index_counter > two_seeded_index_counter:
+		return
+	elif team_1_counter < team_2_counter and one_seeded_index_counter < two_seeded_index_counter:
+		seeded_team_name_list[one_seeded_index_counter] = team_name_2
+		seeded_team_name_list[two_seeded_index_counter] = team_name_1
+	return
+
+
+def implement_tie_breakers(alphabetical_win_list, alphabetical_team_name_list, game_data, seeded_team_name_list):
+	dict = find_win_ties(alphabetical_win_list)
+	for key in dict:
+		tied_team_alphabetical_index_1 = dict[key][0]
+		tied_team_alphabetical_index_2 = dict[key][1]
+		tied_team_name_1 = alphabetical_team_name_list[tied_team_alphabetical_index_1]
+		tied_team_name_2 = alphabetical_team_name_list[tied_team_alphabetical_index_2]
+		season_series_result(game_data, tied_team_name_1, tied_team_name_2, seeded_team_name_list)
+
 
 def write_to_csv(alphabetical_team_name_list, current_iterative_date):
 	return
@@ -199,11 +256,6 @@ for game in game_data:
     
     order_dict(west_name_to_win_percentage_dict, west_seeded_team_name_list, west_seeded_win_percentage_array)
     order_dict(east_name_to_win_percentage_dict, east_seeded_team_name_list, east_seeded_win_percentage_array)
-
-    print('WEST RANKINGS')
-    print(west_seeded_team_name_list)
-    print('EAST RANKINGS')
-    print(east_seeded_team_name_list)
     
     west_index_order = []
     east_index_order = []
@@ -218,4 +270,9 @@ for game in game_data:
     print(west_alphabetical_elimination_date_array)
     print('EAST PLAYOFFS')
     print(east_alphabetical_elimination_date_array)
+
+implement_tie_breakers(west_wins, west_team_names, game_data, west_seeded_team_name_list)
+print(west_seeded_team_name_list)
+implement_tie_breakers(east_wins, east_team_names, game_data, east_seeded_team_name_list)
+print(east_seeded_team_name_list)
 
