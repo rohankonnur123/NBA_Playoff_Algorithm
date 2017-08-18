@@ -141,7 +141,7 @@ def season_series_result(game_data, team_name_1, team_name_2, seeded_team_name_l
 	return
 
 
-def implement_tie_breakers(alphabetical_win_list, alphabetical_team_name_list, game_data, seeded_team_name_list):
+def implement_tie_breakers(alphabetical_win_list, alphabetical_team_name_list, game_data, seeded_team_name_list, alphabetical_elimination_date_array, index_order):
 	dict = find_win_ties(alphabetical_win_list)
 	for key in dict:
 		tied_team_alphabetical_index_1 = dict[key][0]
@@ -149,6 +149,14 @@ def implement_tie_breakers(alphabetical_win_list, alphabetical_team_name_list, g
 		tied_team_name_1 = alphabetical_team_name_list[tied_team_alphabetical_index_1]
 		tied_team_name_2 = alphabetical_team_name_list[tied_team_alphabetical_index_2]
 		season_series_result(game_data, tied_team_name_1, tied_team_name_2, seeded_team_name_list)
+		determine_index_order(seeded_team_name_list, alphabetical_team_name_list, index_order)
+		counter = 0
+		for name in seeded_team_name_list:
+			if counter > 7:
+				if alphabetical_elimination_date_array[index_order[counter - 1]] == 0:
+					alphabetical_elimination_date_array[index_order[counter - 1]] = '4/12/17'
+			else:
+				counter+=1
 
 
 def write_to_csv(alphabetical_team_name_list, current_iterative_date):
@@ -271,8 +279,11 @@ for game in game_data:
     print('EAST PLAYOFFS')
     print(east_alphabetical_elimination_date_array)
 
-implement_tie_breakers(west_wins, west_team_names, game_data, west_seeded_team_name_list)
+implement_tie_breakers(west_wins, west_team_names, game_data, west_seeded_team_name_list, west_alphabetical_elimination_date_array, west_index_order)
 print(west_seeded_team_name_list)
-implement_tie_breakers(east_wins, east_team_names, game_data, east_seeded_team_name_list)
+print(west_alphabetical_elimination_date_array)
+implement_tie_breakers(east_wins, east_team_names, game_data, east_seeded_team_name_list, east_alphabetical_elimination_date_array, east_index_order)
 print(east_seeded_team_name_list)
+print(east_alphabetical_elimination_date_array)
+print(east_team_names)
 
