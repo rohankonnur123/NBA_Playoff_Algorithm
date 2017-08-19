@@ -285,5 +285,42 @@ print(west_alphabetical_elimination_date_array)
 implement_tie_breakers(east_wins, east_team_names, game_data, east_seeded_team_name_list, east_alphabetical_elimination_date_array, east_index_order)
 print(east_seeded_team_name_list)
 print(east_alphabetical_elimination_date_array)
-print(east_team_names)
+
+team = 0
+while team < len(west_alphabetical_elimination_date_array):
+	if west_alphabetical_elimination_date_array[team] == 0:
+		west_alphabetical_elimination_date_array[team] = 'playoffs'
+	if east_alphabetical_elimination_date_array[team] == 0:
+		east_alphabetical_elimination_date_array[team] = 'playoffs'
+	team += 1
+
+league_alphabetical_array = []
+csv_to_array('Analytics_Attachment/Sample_NBA_Clinch_Dates-Table 1.csv', league_alphabetical_array)
+league_alphabetical_array = league_alphabetical_array[1:]
+
+league_alphabetical_teams = [team[0] for team in league_alphabetical_array]
+
+list_to_write = []
+for elem in league_alphabetical_teams:
+	if elem in east_team_names:
+		index_for_name = east_team_names.index(elem)
+		list_to_write.append([elem, east_alphabetical_elimination_date_array[index_for_name]])
+	elif elem in west_team_names:
+		index_for_name = west_team_names.index(elem)
+		list_to_write.append([elem, west_alphabetical_elimination_date_array[index_for_name]])
+
+output_csv = 'elimination_dates.csv'
+
+with open(output_csv, 'wb') as file:
+	file.write('Team')
+	file.write(', ')
+	file.write('Date Eliminated')
+	file.write('\n')
+	for line in list_to_write:
+	    file.write(line[0])
+	    file.write(', ')
+	    file.write(line[1])
+	    file.write('\n')
+
+
 
