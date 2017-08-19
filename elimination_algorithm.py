@@ -83,16 +83,9 @@ def elim_determine(alphabetical_team_name_list, seeded_team_name_list, index_ord
 	i = 8
 	while i < len(seeded_team_name_list):
 		comp_val = alphabetical_expected_wins_list[index_order[i]]
-		# print('dates')
-		# print(alphabetical_elimination_date_array)
 		if comp_val < standard: # need to change this condition so that the initial elimination date isn't overriden
-			if alphabetical_elimination_date_array[index_order[i]] != 0:
-				print(seeded_team_name_list[i] + " is eliminated on " + alphabetical_elimination_date_array[index_order[i]])
-			else:
+			if alphabetical_elimination_date_array[index_order[i]] == 0:
 				alphabetical_elimination_date_array[index_order[i]] = game[0]
-				print(seeded_team_name_list[i] + " is eliminated on " + alphabetical_elimination_date_array[index_order[i]])
-		else:
-			print(seeded_team_name_list[i] + " is still in the running!")
 		i+=1
 
 def find_win_ties(alphabetical_win_list):
@@ -274,18 +267,11 @@ for game in game_data:
     elim_determine(west_team_names, west_seeded_team_name_list, west_index_order, west_wins, west_perfect_wins, west_alphabetical_elimination_date_array, game)
     elim_determine(east_team_names, east_seeded_team_name_list, east_index_order, east_wins, east_perfect_wins, east_alphabetical_elimination_date_array, game)
 
-    print('WEST PLAYOFFS')
-    print(west_alphabetical_elimination_date_array)
-    print('EAST PLAYOFFS')
-    print(east_alphabetical_elimination_date_array)
-
+# Check for tie breakers
 implement_tie_breakers(west_wins, west_team_names, game_data, west_seeded_team_name_list, west_alphabetical_elimination_date_array, west_index_order)
-print(west_seeded_team_name_list)
-print(west_alphabetical_elimination_date_array)
 implement_tie_breakers(east_wins, east_team_names, game_data, east_seeded_team_name_list, east_alphabetical_elimination_date_array, east_index_order)
-print(east_seeded_team_name_list)
-print(east_alphabetical_elimination_date_array)
 
+# Format output
 team = 0
 while team < len(west_alphabetical_elimination_date_array):
 	if west_alphabetical_elimination_date_array[team] == 0:
@@ -294,12 +280,14 @@ while team < len(west_alphabetical_elimination_date_array):
 		east_alphabetical_elimination_date_array[team] = 'playoffs'
 	team += 1
 
+# Format new team output list
 league_alphabetical_array = []
 csv_to_array('Analytics_Attachment/Sample_NBA_Clinch_Dates-Table 1.csv', league_alphabetical_array)
 league_alphabetical_array = league_alphabetical_array[1:]
 
 league_alphabetical_teams = [team[0] for team in league_alphabetical_array]
 
+# Create full league lists
 list_to_write = []
 for elem in league_alphabetical_teams:
 	if elem in east_team_names:
@@ -309,8 +297,10 @@ for elem in league_alphabetical_teams:
 		index_for_name = west_team_names.index(elem)
 		list_to_write.append([elem, west_alphabetical_elimination_date_array[index_for_name]])
 
+# File we want to write output to
 output_csv = 'elimination_dates.csv'
 
+# Write to output file
 with open(output_csv, 'wb') as file:
 	file.write('Team')
 	file.write(', ')
